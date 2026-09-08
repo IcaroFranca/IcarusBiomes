@@ -31,24 +31,43 @@ namespace do registro.
 
 ### Cores
 
-| Efeito | Hex | Decimal (usado no JSON) |
+Duas fontes diferentes dentro do mesmo arquivo, por causa de uma mudança de
+versão real do jogo (ver "IMPORTANTE" logo abaixo):
+
+| Efeito | Onde mora no JSON | Valor |
 |---|---|---|
-| Grama (`grass_color`) | `#8E6FCE` | `9334734` |
-| Folhagem (`foliage_color`) | `#5B3E96` | `5979798` |
-| Água (`water_color`) | `#4A3B6B` | `4864875` |
-| Neblina da água (`water_fog_color`) | `#2E2447` | `3023943` |
-| Neblina do ar (`fog_color`) | `#7B6C9E` | `8088734` |
-| Céu (`sky_color`) | `#4A3B94` | `4864916` |
+| Grama (`grass_color`) | `effects.grass_color` (decimal) | `#8E6FCE` → `9334734` |
+| Folhagem (`foliage_color`) | `effects.foliage_color` (decimal) | `#5B3E96` → `5979798` |
+| Água (`water_color`) | `effects.water_color` (decimal) | `#4A3B6B` → `4864875` |
+| Céu (`minecraft:visual/sky_color`) | `attributes` (string hex) | `"#4A3B94"` |
+| Neblina do ar (`minecraft:visual/fog_color`) | `attributes` (string hex) | `"#7B6C9E"` |
+| Neblina da água (`minecraft:visual/water_fog_color`) | `attributes` (string hex) | `"#2E2447"` |
 
 Um roxo ametista saturado na grama, mais escuro/azulado na folhagem pra dar
 profundidade, água indigo/parada quase preta no fundo, e um céu roxo
 escuro (mais escuro que a água, clima de tempestade sobrenatural) —
 paleta fechada de ponta a ponta, nada fica no azul vanilla padrão.
 
-Pra trocar qualquer cor depois: edite o valor decimal correspondente em
-`shadowed_graveyard.json` (Minecraft só aceita inteiro decimal, não hex,
-nos campos de `effects`) — a tabela acima já traz os dois lado a lado pra
-não precisar reconverter.
+**IMPORTANTE — por que céu/neblina não ficam em `effects` como grama/água**:
+a partir da leva "Environment Attributes" do jogo (versão 26.x, a mesma
+linha que este servidor roda), `effects.sky_color`, `effects.fog_color` e
+`effects.water_fog_color` foram **substituídos** por um registro novo,
+`attributes` (IDs tipo `minecraft:visual/sky_color`) — os campos antigos
+continuam sendo aceitos no JSON (não dão erro), mas são **ignorados
+silenciosamente**, sem aviso nenhum no log. `grass_color`/`foliage_color`/
+`water_color` **não** foram afetados, continuam em `effects` normalmente.
+Isso rendeu uma sessão inteira de debug (bioma pintado certinho, grama/água
+mudando de cor, mas céu e neblina teimando em ficar azul vanilla) até
+descobrir que era isso — se algum dia esse comportamento mudar de novo (ou
+se algum campo de `effects` também for migrado), o sintoma vai ser
+idêntico: campo aceito no JSON, sem erro nenhum, simplesmente sem efeito
+visual. Note também o formato diferente: `effects` usa inteiro decimal,
+`attributes` usa string hex (`"#RRGGBB"`) — não dá pra copiar valor de um
+formato pro outro sem converter.
+
+Pra trocar qualquer cor depois: grama/folhagem/água editam o valor decimal
+em `effects` (tabela acima traz hex e decimal lado a lado); céu/neblina
+editam a string hex direto em `attributes`, sem conversão nenhuma.
 
 ### Clima
 
