@@ -38,13 +38,12 @@ namespace do registro.
 | Água (`water_color`) | `#4A3B6B` | `4864875` |
 | Neblina da água (`water_fog_color`) | `#2E2447` | `3023943` |
 | Neblina do ar (`fog_color`) | `#7B6C9E` | `8088734` |
-| Céu (`sky_color`) | `#78A7FF` (padrão vanilla, Plains) | `7907327` |
+| Céu (`sky_color`) | `#4A3B94` | `4864916` |
 
 Um roxo ametista saturado na grama, mais escuro/azulado na folhagem pra dar
-profundidade, água index/parada quase preta no fundo — clima de "cemitério
-assombrado" numa ilha flutuante. Céu deixado no azul vanilla de propósito
-(trocar o céu inteiro costuma ficar artificial demais; o roxo da
-grama+água já carrega o clima sozinho).
+profundidade, água indigo/parada quase preta no fundo, e um céu roxo
+escuro (mais escuro que a água, clima de tempestade sobrenatural) —
+paleta fechada de ponta a ponta, nada fica no azul vanilla padrão.
 
 Pra trocar qualquer cor depois: edite o valor decimal correspondente em
 `shadowed_graveyard.json` (Minecraft só aceita inteiro decimal, não hex,
