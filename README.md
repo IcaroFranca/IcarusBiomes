@@ -107,6 +107,29 @@ ela só lista os 15 biomas vanilla curados em `BiomeOption`. Dar suporte a
 biomas customizados (deste datapack) na wand é trabalho futuro no
 repositório do IcarusRPG, não algo que este datapack por si resolve.
 
+## Função utilitária: pintar uma área grande de uma vez (`paint_test_area`)
+
+`/fillbiome` sozinho só cobre até 32768 blocos de volume por chamada (mesmo
+teto do `/fill` vanilla) — pintar uma área de segurança grande (ex.: pra
+testar se o `sky_color` só aparece quando o bioma domina uma região ampla,
+não só a área pisável) exigiria dezenas de comandos manuais. A função
+`data/icarusrpg/function/paint_test_area.mcfunction` faz isso num
+comando só: pinta um bloco de 320x320 (16 de altura, `~-8` a `~8`)
+centrado em quem executa, em 64 chamadas de `/fillbiome` de 40x40x16 cada
+(dentro do limite), ladrilhando a área toda.
+
+Uso: fique parado no centro da área que quer pintar e rode
+```
+/function icarusrpg:paint_test_area
+```
+Se o servidor reclamar de posição não carregada, primeiro force a geração
+dos chunks (`/forceload add <x1> <z1> <x2> <z2>`, também limitado a 256
+chunks por chamada) na mesma área antes de rodar a função.
+
+É uma ferramenta de diagnóstico/teste (nasceu de investigar por que o céu
+não mudava de cor numa área pequena pintada) — não é usada pela ilha de
+combate em si, que é bem menor que 320x320.
+
 ## Próximo passo (não implementado aqui)
 
 Uma vez que o datapack esteja instalado e o bioma pintado na ilha, a ideia
